@@ -1,6 +1,5 @@
 # Nix
 /.direnv
-flake.lock
 
 # Python / uv
 /.venv

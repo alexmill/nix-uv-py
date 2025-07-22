@@ -1,9 +1,8 @@
-# my-python-project/flake.nix
 {
   description = "A development shell for a Python project using uv";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -23,16 +22,16 @@
           shellHook = ''
             export VENV_DIR=".venv"
             export UV_VENV_PATH="$VENV_DIR"
-            # Create venv if missing
+            
+            # Create and activate venv if missing
             if [ ! -d "$VENV_DIR" ]; then
-              echo "Creating virtual environment in $VENV_DIR..."
-              ${python}/bin/python -m venv "$VENV_DIR"
+              echo "🔧 Setting up Python environment..."
+              ${python}/bin/python -m venv "$VENV_DIR" > /dev/null 2>&1
               source "$VENV_DIR/bin/activate"
-              echo "Installing local package in editable mode with uv..."
-              uv pip install -e .
-              echo "✅ Done. The venv is active, dependencies and local package are installed."
+              uv pip install -e . > /dev/null 2>&1
+              echo "✅ Environment ready"
             else
-              source "$VENV_DIR/bin/activate" > /dev/null 2>&1
+              source "$VENV_DIR/bin/activate"
             fi
           '';
         };
