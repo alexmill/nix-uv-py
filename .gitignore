@@ -1,0 +1,9 @@
+# Nix
+/.direnv
+flake.lock
+
+# Python / uv
+/.venv
+__pycache__/
+*.pyc
+uv_python_project.egg-info
