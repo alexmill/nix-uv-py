@@ -25,13 +25,15 @@
             export UV_VENV_PATH="$VENV_DIR"
             # Create venv if missing
             if [ ! -d "$VENV_DIR" ]; then
-              ${python}/bin/python -m venv "$VENV_DIR" > /dev/null 2>&1
-              source "$VENV_DIR/bin/activate" > /dev/null 2>&1
-              uv pip install -e . > /dev/null 2>&1
+              echo "Creating virtual environment in $VENV_DIR..."
+              ${python}/bin/python -m venv "$VENV_DIR"
+              source "$VENV_DIR/bin/activate"
+              echo "Installing local package in editable mode with uv..."
+              uv pip install -e .
+              echo "✅ Done. The venv is active, dependencies and local package are installed."
             else
               source "$VENV_DIR/bin/activate" > /dev/null 2>&1
             fi
-            echo "✅ Python dev shell ready (.venv active, uv deps installed)"
           '';
         };
       }
