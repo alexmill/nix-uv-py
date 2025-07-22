@@ -21,22 +21,17 @@
           ];
 
           shellHook = ''
-            echo "✨ Entering uv-based Python development shell..."
-
             export VENV_DIR=".venv"
-            export UV_VENV_PATH="''${VENV_DIR}"
-
+            export UV_VENV_PATH="$VENV_DIR"
+            # Create venv if missing
             if [ ! -d "$VENV_DIR" ]; then
-              echo "Creating virtual environment in $VENV_DIR..."
-              ${python}/bin/python -m venv "$VENV_DIR"
+              ${python}/bin/python -m venv "$VENV_DIR" > /dev/null 2>&1
+              source "$VENV_DIR/bin/activate" > /dev/null 2>&1
+              uv pip install -e . > /dev/null 2>&1
+            else
+              source "$VENV_DIR/bin/activate" > /dev/null 2>&1
             fi
-
-            source "$VENV_DIR/bin/activate"
-
-            echo "Installing local package in editable mode with uv..."
-            uv pip install -e .
-
-            echo "✅ Done. The venv is active, dependencies and local package are installed."
+            echo "✅ Python dev shell ready (.venv active, uv deps installed)"
           '';
         };
       }
